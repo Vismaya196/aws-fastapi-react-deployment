@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - cd frontend
+      - npm ci
+
+  build:
+    commands:
+      - npm run build
+
+  post_build:
+    commands:
+      - aws s3 sync build/ s3://fastapi-react-frontend-710562346725 --delete
+      - aws cloudfront create-invalidation --distribution-id E7EUBD0LFAZ17 --paths "/*"
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: frontend/build
