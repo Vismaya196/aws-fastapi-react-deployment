@@ -4,7 +4,7 @@ const App = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetch('http://fastapi-alb-409528555.eu-west-1.elb.amazonaws.com/')
+    fetch('/api/')
       .then(response => response.json())
       .then(data => setMessage(data.Hello));
   }, []);
