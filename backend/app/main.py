@@ -17,3 +17,6 @@ app.add_middleware(
 async def read_root():
     return {"Hello": "World"}
 
+@app.get("/api/")
+async def api_root():
+    return {"Hello": "World"}
