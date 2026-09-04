@@ -28,7 +28,7 @@ phases:
       - echo "Pushing Docker image"
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo "Tagging image as latest"
-      - docker tag "$REPOSITORY_URI:$IMAGE_TAG" " $REPOSITORY_URI:latest"
+      - docker tag "$REPOSITORY_URI:$IMAGE_TAG""$REPOSITORY_URI:latest"
       - echo "Pushing latest image"
       - docker push "$REPOSITORY_URI:latest"
       - printf '[{"name":"fastapi-container","imageUri":"%s"}]' "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json
