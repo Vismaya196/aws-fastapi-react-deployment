@@ -30,7 +30,7 @@ phases:
       - docker build --platform linux/amd64 -t $REPOSITORY_URI:$IMAGE_TAG ./backend
 
       - echo "Running Trivy vulnerability scan"
-      - trivy image --scanners vuln --severity CRITICAL,HIGH --exit-code 1 $REPOSITORY_URI:$IMAGE_TAG
+      - trivy image --scanners vuln --severity CRITICAL,HIGH --exit-code 1 --no-progress $REPOSITORY_URI:$IMAGE_TAG
 
       - echo "Tagging image as latest"
       - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
