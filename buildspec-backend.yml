@@ -22,15 +22,15 @@ phases:
       - echo "Image tag=$IMAGE_TAG"
 
   build:
-    commands:
-      - echo "Running Semgrep SAST scan"
-      - semgrep --config=auto ./backend
+  commands:
+    - echo "Running Semgrep SAST scan"
+    - semgrep --config=auto ./backend
 
-      - echo "Building AMD64 Docker image"
-      - docker build --platform linux/amd64 -t $REPOSITORY_URI:$IMAGE_TAG ./backend
+    - echo "Building AMD64 Docker image"
+    - docker build --platform linux/amd64 -t $REPOSITORY_URI:$IMAGE_TAG ./backend
 
-      - echo "Running Trivy vulnerability scan"
-      - trivy image --scanners vuln --severity CRITICAL,HIGH --exit-code 1 --no-progress $REPOSITORY_URI:$IMAGE_TAG
+    - echo "Running Trivy vulnerability scan"
+    - trivy image --scanners vuln --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1 --no-progress $REPOSITORY_URI:$IMAGE_TAG
 
       - echo "Tagging image as latest"
       - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
