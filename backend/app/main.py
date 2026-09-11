@@ -5,7 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 
-origins = ["*"]
+origins = [
+    "https://d2fog6rf0x50gg.cloudfront.net"
+]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
