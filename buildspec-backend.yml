@@ -28,6 +28,10 @@ phases:
 
     - echo "Building AMD64 Docker image"
     - docker build --platform linux/amd64 -t $REPOSITORY_URI:$IMAGE_TAG ./backend
+    - echo "===== IMAGE DETAILS ====="
+    - docker images $REPOSITORY_URI:$IMAGE_TAG
+    - docker image inspect $REPOSITORY_URI:$IMAGE_TAG --format '{{.Id}}'
+    - docker image inspect $REPOSITORY_URI:$IMAGE_TAG --format '{{.RepoDigests}}'
 
     - echo "Running Trivy vulnerability scan"
     - trivy image --scanners vuln --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1 --no-progress $REPOSITORY_URI:$IMAGE_TAG
