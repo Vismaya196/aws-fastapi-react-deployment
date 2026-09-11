@@ -16,12 +16,20 @@ phases:
       - echo "Repository URI=$REPOSITORY_URI"
       - echo "Image tag=$IMAGE_TAG"
 
-  build:
+    build:
     commands:
       - echo "Building AMD64 Docker image"
       - docker buildx build --platform linux/amd64 --provenance=false --sbom=false --load -t $REPOSITORY_URI:$IMAGE_TAG ./backend
-      - echo "Running Trivy security scan"
-      - trivy image --scanners vuln --severity CRITICAL,HIGH --exit-code 1 $REPOSITORY_URI:$IMAGE_TAG
+
+      - echo "===== IMAGE DETAILS ====="
+      - docker images $REPOSITORY_URI:$IMAGE_TAG
+      - docker image inspect $REPOSITORY_URI:$IMAGE_TAG --format '{{.Id}}'
+      - docker image inspect $REPOSITORY_URI:$IMAGE_TAG --format '{{.RepoDigests}}'
+      - docker image inspect $REPOSITORY_URI:$IMAGE_TAG --format '{{.Architecture}}'
+      - docker image inspect $REPOSITORY_URI:$IMAGE_TAG --format '{{.Os}}'
+
+      - echo "===== RUNNING TRIVY SCAN ====="
+      - trivy image --scanners vuln --severity CRITICAL,HIGH --exit-code 1 --no-progress $REPOSITORY_URI:$IMAGE_TAG
 
   post_build:
     commands:
